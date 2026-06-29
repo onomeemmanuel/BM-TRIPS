@@ -33,7 +33,7 @@ app.get('/api/health', (_, res) => res.json({ status: 'ok', time: new Date() }))
 const frontendDistPath = path.join(__dirname, '../../frontend/dist');
 if (existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
-  app.get('*', (req, res, next) => {
+  app.get(/^(?!\/api\/|\/uploads\/).*/, (req, res, next) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
       return next();
     }
