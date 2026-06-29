@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --sky: #38B6E8;
+  --sky-dark: #0A7EB8;
+  --sky-deep: #0A5C84;
+  --sky-tint: #EBF7FD;
+  --sky-mid: #C5E9F7;
+  --white: #FFFFFF;
+  --ink: #0D2136;
+  --slate: #3A5369;
+  --muted: #7A94A8;
+  --border: #D6EDF7;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #ffffff;
+  color: #0D2136;
+  overflow-x: hidden;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EBF7FD;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #38B6E8;
+  border-radius: 3px;
+}
+
+@keyframes driftA {
+
+  0%,
+  100% {
+    transform: translateX(0)
+  }
+
+  50% {
+    transform: translateX(40px)
+  }
+}
+
+@keyframes driftB {
+
+  0%,
+  100% {
+    transform: translateX(0)
+  }
+
+  50% {
+    transform: translateX(-30px)
+  }
+}
+
+@keyframes planeFly {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg)
+  }
+
+  50% {
+    transform: translateY(-18px) rotate(-2deg)
+  }
+}
+
+.animate-planeFly {
+  animation: planeFly 6s ease-in-out infinite;
+}
+
+.text-sky {
+  color: #38B6E8 !important;
+}
+
+.bg-sky {
+  background-color: #38B6E8 !important;
+}
+
+.hover\:bg-sky-dark:hover {
+  background-color: #0A7EB8 !important;
+}
+
+.text-sky-deep {
+  color: #0A5C84 !important;
+}
+
+.bg-sky-deep {
+  background-color: #0A5C84 !important;
+}
+
+.bg-sky-tint {
+  background-color: #EBF7FD !important;
+}
+
+.bg-sky-mid {
+  background-color: #C5E9F7 !important;
+}
+
+.text-ink {
+  color: #0D2136 !important;
+}
+
+.bg-ink {
+  background-color: #0D2136 !important;
+}
+
+.text-slate {
+  color: #3A5369 !important;
+}
+
+.text-muted {
+  color: #7A94A8 !important;
+}
+
+.border-border {
+  border-color: #D6EDF7 !important;
+}
+
+.border-sky {
+  border-color: #38B6E8 !important;
+}
+
+.hover\:border-sky:hover {
+  border-color: #38B6E8 !important;
+}
+
+.focus\:border-sky:focus {
+  border-color: #38B6E8 !important;
+}
+
+.shadow-sky\/30 {
+  box-shadow: 0 6px 20px rgba(56, 182, 232, 0.30) !important;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
