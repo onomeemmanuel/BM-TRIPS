@@ -13,10 +13,16 @@ import contactsRoutes from './routes/contacts.js';
 import postsRoutes from './routes/post.js';
 
 dotenv.config();
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:5174'].filter(Boolean);
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://localhost:5174',
+].filter(Boolean);
+
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,7 +34,9 @@ app.use('/api/bookings', bookingsRoutes);
 app.use('/api/contacts', contactsRoutes);
 app.use('/api/posts', postsRoutes);
 
-app.get('/api/health', (_, res) => res.json({ status: 'ok', time: new Date() }));
+app.get('/api/health', (_, res) =>
+  res.json({ status: 'ok', time: new Date() })
+);
 
 const frontendDistPath = path.join(__dirname, '../../frontend/dist');
 if (existsSync(frontendDistPath)) {
@@ -42,22 +50,32 @@ if (existsSync(frontendDistPath)) {
 }
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Unhandled error:', err.stack);
   res.status(err.status || 500).json({ message: err.message || 'Server error' });
 });
 
 const start = async () => {
   try {
     const port = process.env.PORT || 5000;
+
+    // Test DB connection
+    console.log('🔌 Connecting to database...');
+    console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
     await pool.query('SELECT 1');
+    console.log('✅ Database connected');
+
+    // Seed data
     await seedAdmin();
     await seedTours();
     await seedPosts();
+
     app.listen(port, () =>
-      console.log(`🚀 Server running on http://localhost:${port}`)
+      console.log(`🚀 Server running on port ${port}`)
     );
   } catch (err) {
-    console.error('❌ Startup failed:', err.message);
+    console.error('❌ Startup failed:');
+    console.error('Message:', err.message);
+    console.error('Stack:', err.stack);
     process.exit(1);
   }
 };
