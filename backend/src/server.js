@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import pool from './config/db.js';
 import { seedAdmin, seedTours, seedPosts } from './config/seed.js';
@@ -29,6 +30,17 @@ app.use('/api/posts', postsRoutes);
 
 app.get('/api/health', (_, res) => res.json({ status: 'ok', time: new Date() }));
 
+const frontendDistPath = path.join(__dirname, '../../frontend/dist');
+if (existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+}
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({ message: err.message || 'Server error' });
@@ -36,12 +48,13 @@ app.use((err, req, res, next) => {
 
 const start = async () => {
   try {
+    const port = process.env.PORT || 5000;
     await pool.query('SELECT 1');
     await seedAdmin();
     await seedTours();
     await seedPosts();
-    app.listen(process.env.PORT, () =>
-      console.log(`🚀 Server running on http://localhost:${process.env.PORT}`)
+    app.listen(port, () =>
+      console.log(`🚀 Server running on http://localhost:${port}`)
     );
   } catch (err) {
     console.error('❌ Startup failed:', err.message);
